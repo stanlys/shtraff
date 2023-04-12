@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from "react";
-import { Button, Modal, Divider, Tree } from "antd";
+import { Button, Modal, Divider, Tree, Space, Typography, Input } from "antd";
 import { DownOutlined, FrownFilled, FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
+
+const { Text, Link } = Typography;
 
 interface DataNode {
     title: React.ReactNode;
@@ -18,16 +20,16 @@ const initTreeData: DataNode[] = [
             {
                 key: "0-1",
                 title: (
-                    <div>
-                        <label>Имя </label>
-                        <input />
+                    <Space direction="vertical" style={{ width: "30rem" }}>
+                        <Text>Имя</Text>
+                        <Input size="large" />
                         <label>Email</label>
-                        <input />
+                        <Input size="large" />
                         <label>Дней отсрочки </label>
-                        <input />
+                        <Input size="large" />
                         <label>Кредитный лимит</label>
-                        <input />
-                    </div>
+                        <Input size="large" />
+                    </Space>
                 ),
             },
         ],
