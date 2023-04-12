@@ -7,6 +7,9 @@ import React, { useEffect, useState } from "react";
 import { ICunsumers } from "@app/MOCK_DATA";
 import { Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
+import { CopyOutlined } from "@ant-design/icons";
+
+import { ModalWindow } from "./api/modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +22,10 @@ interface DataType {
     createAt: string;
     changeAt: string;
 }
+
+const loggin = (value: any) => {
+    navigator.clipboard.writeText(value);
+};
 
 const columns: ColumnsType<DataType> = [
     {
@@ -33,7 +40,7 @@ const columns: ColumnsType<DataType> = [
         render: (value: any, recoder: { key: React.Key }) => {
             return (
                 <span>
-                    {value} <Button>copy</Button>
+                    {value} <CopyOutlined onClick={() => loggin(value)} />
                 </span>
             );
         },
@@ -46,19 +53,19 @@ const columns: ColumnsType<DataType> = [
     },
     {
         title: "Отсрочка оплаты",
-        dataIndex: "deferral_days",
+        dataIndex: "pay",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.id.length - b.id.length,
     },
     {
         title: "Создан",
-        dataIndex: "created_at",
+        dataIndex: "createAt",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.id.length - b.id.length,
     },
     {
         title: "Изменен",
-        dataIndex: "updated_at",
+        dataIndex: "changeAt",
         defaultSortOrder: "descend",
         sorter: (a, b) => a.id.length - b.id.length,
     },
@@ -67,7 +74,8 @@ const columns: ColumnsType<DataType> = [
 const { Search } = Input;
 
 export default function Home() {
-    const [constumers, setConstumers] = useState<ICunsumers>();
+    const [constumers, setCostumers] = useState<ICunsumers>();
+    const [open, setOpen] = useState(false);
 
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
@@ -84,11 +92,19 @@ export default function Home() {
     useEffect(() => {
         fetch("/note")
             .then((response) => response.json())
-            .then((json) => setConstumers(json));
+            .then((json) => setCostumers(json));
     }, []);
 
     const setDataSource = () => {
-        return constumers?.customers.map((el) => ({ ...el, key: el.id }));
+        return constumers?.customers.map((el) => ({
+            id: el.id,
+            name: el.name,
+            email: el.email,
+            key: el.id,
+            pay: el.deferral_days,
+            createAt: el.created_at,
+            changeAt: el.updated_at,
+        }));
     };
 
     return (
@@ -107,7 +123,10 @@ export default function Home() {
                         <Button type="primary" disabled>
                             Экспорт
                         </Button>
-                        <Button type="primary"> + Добавить клиента</Button>
+                        <Button type="primary" onClick={() => setOpen(!open)}>
+                            {" "}
+                            + Добавить клиента
+                        </Button>
                     </div>
                 </div>
                 <div>
@@ -119,6 +138,7 @@ export default function Home() {
                     />
                 </div>
             </main>
+            <ModalWindow open={open} setOpen={setOpen}></ModalWindow>
         </>
     );
 }
