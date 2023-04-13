@@ -124,7 +124,6 @@ export default function Home() {
                             Экспорт
                         </Button>
                         <Button type="primary" onClick={() => setOpen(!open)}>
-                            {" "}
                             + Добавить клиента
                         </Button>
                     </div>
@@ -134,6 +133,8 @@ export default function Home() {
                         rowSelection={rowSelection}
                         columns={columns}
                         dataSource={setDataSource()}
+                        
+                        style={{ minHeight: 600 }}
                         className={style.table}
                     />
                 </div>
