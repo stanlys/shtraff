@@ -6,6 +6,10 @@ export function makeServer({ environment = "test" } = {}) {
             this.get("/note", (schema, request) => {
                 return MOCK_REQUEST;
             });
+            this.post("/addnote", (schema, request) => {
+                console.log("You post data");
+                return "OK";
+            });
         },
     });
     return server;

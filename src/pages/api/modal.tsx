@@ -3,6 +3,11 @@ import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table }
 import { DownOutlined, FrownFilled, FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
+import ComponentKeyValue from "./componentKeyValue";
+import ComponentEmailList from "./componentEmailList";
+import ComponentClientDetail from "./componentClientDetail";
+import ComponentBank from "./componentBank";
+import ComponentOrganizationDetail from "./componentOrganizationDetail";
 
 const { Text, Link } = Typography;
 
@@ -62,18 +67,7 @@ const initTreeData: DataNode[] = [
         children: [
             {
                 key: "0-1",
-                title: (
-                    <Space direction="vertical" style={{ width: "30rem" }}>
-                        <Text>Имя</Text>
-                        <Input size="large" />
-                        <label>Email</label>
-                        <Input size="large" />
-                        <label>Дней отсрочки </label>
-                        <Input size="large" />
-                        <label>Кредитный лимит</label>
-                        <Input size="large" />
-                    </Space>
-                ),
+                title: <ComponentClientDetail></ComponentClientDetail>,
             },
         ],
     },
@@ -83,20 +77,7 @@ const initTreeData: DataNode[] = [
         children: [
             {
                 key: "1-1",
-                title: (
-                    <Space direction="vertical" style={{ width: "30rem" }}>
-                        <Text>Название организации</Text>
-                        <Input size="large" />
-                        <label>ИНН организации</label>
-                        <Input size="large" />
-                        <label>КПП организации </label>
-                        <Input size="large" />
-                        <label>ОГРН организации</label>
-                        <Input size="large" />
-                        <label>Юридический адрес</label>
-                        <Input size="large" />
-                    </Space>
-                ),
+                title: <ComponentOrganizationDetail></ComponentOrganizationDetail>,
             },
         ],
     },
@@ -106,24 +87,7 @@ const initTreeData: DataNode[] = [
         children: [
             {
                 key: "2-1",
-                title: (
-                    <Space direction="vertical" style={{ width: "30rem" }}>
-                        <Text>Название счета</Text>
-                        <Input size="large" />
-                        <label>Номер счет</label>
-                        <Input size="large" />
-                        <label>БИК счета </label>
-                        <Input size="large" />
-                        <label>Корр. номер счета</label>
-                        <Input size="large" />
-                        <label>Корр. номер счета</label>
-                        <Switch defaultChecked />
-                        <Divider></Divider>
-                        <Button type="dashed" block>
-                            + Добавить еще счет
-                        </Button>
-                    </Space>
-                ),
+                title: <ComponentBank></ComponentBank>,
             },
         ],
     },
@@ -133,16 +97,7 @@ const initTreeData: DataNode[] = [
         children: [
             {
                 key: "3-1",
-                title: (
-                    <Space direction="vertical" style={{ width: "30rem" }}>
-                        <Text>Email</Text>
-                        <Input size="large" />
-                        <Divider></Divider>
-                        <Button type="dashed" block>
-                            + Добавить еще email
-                        </Button>
-                    </Space>
-                ),
+                title: <ComponentEmailList></ComponentEmailList>,
             },
         ],
     },
@@ -152,14 +107,7 @@ const initTreeData: DataNode[] = [
         children: [
             {
                 key: "4-1",
-                title: (
-                    <Space direction="vertical" style={{ width: "30rem" }}>
-                        <Table columns={metaColumns} dataSource={metaKeyValue} pagination={false} expandable={{}} />
-                        <Button type="link" onClick={() => addKeyValue()}>
-                            Добавить ключ-значение
-                        </Button>
-                    </Space>
-                ),
+                title: <ComponentKeyValue></ComponentKeyValue>,
             },
         ],
     },
