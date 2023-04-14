@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, RefObject, createRef, useState } from "react";
 import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
@@ -48,15 +48,23 @@ const addKeyValue = (columns: DataType[]): DataType[] => {
     return [...columns, newValue];
 };
 
-const ComponentKeyValue = () => {
+export interface ComponentKeyValueProp {
+    emails?: Array<string>;
+    getValue: (email: Array<DataType>) => void;
+}
+
+const ComponentKeyValue: React.FC<ComponentKeyValueProp> = ({ getValue }) => {
     const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
+
+    
 
     return (
         <Space direction="vertical" style={{ width: "30rem" }}>
-            <Table columns={metaColumns} dataSource={metaKeyValue} pagination={false} expandable={{}} />
+            <Table columns={metaColumns} dataSource={metaKeyValue} pagination={false} />
             <Button
                 type="link"
                 onClick={() => {
+                    getValue(metaKeyValue);
                     setMetaKeyValue(addKeyValue(metaKeyValue));
                 }}
             >
