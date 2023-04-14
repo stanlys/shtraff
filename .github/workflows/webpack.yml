@@ -25,7 +25,7 @@ jobs:
             - name: Install
               run: |
                   echo "Install"
-                  npm ci
+                  npm i webpack-cli @webpack-cli/init
                   npx webpack
 
             - name: Build
