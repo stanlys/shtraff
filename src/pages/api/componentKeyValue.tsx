@@ -3,7 +3,7 @@ import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table }
 import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
 
-interface DataType {
+export interface DataType {
     key: string;
     keyValue: ReactNode;
     value: ReactNode;
@@ -49,23 +49,21 @@ const addKeyValue = (columns: DataType[]): DataType[] => {
 };
 
 export interface ComponentKeyValueProp {
-    emails?: Array<string>;
-    getValue: (email: Array<DataType>) => void;
+    keyValue: Array<DataType>;
+    setKeyValue: React.Dispatch<React.SetStateAction<DataType[]>>;
 }
 
-const ComponentKeyValue: React.FC<ComponentKeyValueProp> = ({ getValue }) => {
-    const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
-
-    
+const ComponentKeyValue: React.FC<ComponentKeyValueProp> = ({ keyValue, setKeyValue }) => {
+    // const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
 
     return (
         <Space direction="vertical" style={{ width: "30rem" }}>
-            <Table columns={metaColumns} dataSource={metaKeyValue} pagination={false} />
+            <Table columns={metaColumns} dataSource={keyValue} pagination={false} />
             <Button
                 type="link"
                 onClick={() => {
-                    getValue(metaKeyValue);
-                    setMetaKeyValue(addKeyValue(metaKeyValue));
+                    //getValue(keyValue);
+                    setKeyValue(addKeyValue(keyValue));
                 }}
             >
                 Добавить ключ-значение

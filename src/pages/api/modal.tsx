@@ -8,6 +8,8 @@ import ComponentEmailList from "./componentEmailList";
 import ComponentClientDetail from "./componentClientDetail";
 import ComponentBank from "./componentBank";
 import ComponentOrganizationDetail from "./componentOrganizationDetail";
+import { FormikConfig, FormikValues, useFormik } from "formik";
+import ORGForm from "./componentOrganizationDetail";
 
 const { Text, Link } = Typography;
 
@@ -66,10 +68,20 @@ interface ModalWindowProps {
 }
 
 export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
-    const [keyValues, setKeyValues] = useState<Array<any>>([]);
-    const getKeyValue = (keyValues: Array<any>) => {
-        setKeyValues(keyValues);
-    };
+    const [emailList, setEmailList] = useState<string[]>([""]);
+
+    const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
+
+    const formik = useFormik({
+        initialValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+        },
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
 
     const initTreeData: DataNode[] = [
         {
@@ -88,7 +100,8 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "1-1",
-                    title: <ComponentOrganizationDetail></ComponentOrganizationDetail>,
+                    // title: <ComponentOrganizationDetail formikRef={formik}></ComponentOrganizationDetail>,
+                    title: <ORGForm></ORGForm>,
                 },
             ],
         },
@@ -108,7 +121,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "3-1",
-                    title: <ComponentEmailList></ComponentEmailList>,
+                    title: <ComponentEmailList emailList={emailList} setEmailList={setEmailList}></ComponentEmailList>,
                 },
             ],
         },
@@ -118,13 +131,17 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "4-1",
-                    title: <ComponentKeyValue getValue={getKeyValue}></ComponentKeyValue>,
+                    title: (
+                        <ComponentKeyValue keyValue={metaKeyValue} setKeyValue={setMetaKeyValue}></ComponentKeyValue>
+                    ),
                 },
             ],
         },
     ];
 
     const submitForm = () => {
+        console.log("Send:", emailList);
+        const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
         console.log("Send:", keyValues);
         setOpen(false);
     };

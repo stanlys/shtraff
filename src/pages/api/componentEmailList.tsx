@@ -2,8 +2,15 @@ import React, { ChangeEvent, useState } from "react";
 import { Button, Modal, Divider, Tree, Space, Typography, Input } from "antd";
 const { Text } = Typography;
 
-const ComponentEmailList = () => {
-    const [emailList, setEmailList] = useState<string[]>([""]);
+interface ComponentEmailListProps {
+    emailList: Array<string>;
+    setEmailList: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setEmailList }) => {
+    // const [emailList, setEmailList] = useState<string[]>([""]);
+
+    const a = React.createRef();
 
     const addEmail = () => {
         setEmailList((emailList) => [...emailList, ""]);
