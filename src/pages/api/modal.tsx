@@ -5,11 +5,12 @@ import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
 import ComponentKeyValue from "./componentKeyValue";
 import ComponentEmailList from "./componentEmailList";
-import ComponentClientDetail from "./componentClientDetail";
+import ComponentClientDetail, { IClient } from "./componentClientDetail";
 import ComponentBank from "./componentBank";
 import ComponentOrganizationDetail from "./componentOrganizationDetail";
 import { FormikConfig, FormikValues, useFormik } from "formik";
 import ORGForm from "./componentOrganizationDetail";
+import ClientForm from "./componentClientDetail";
 
 const { Text, Link } = Typography;
 
@@ -74,14 +75,19 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
 
     const formik = useFormik({
         initialValues: {
-            firstName: "",
-            lastName: "",
+            name: "",
+            days: "",
             email: "",
+            orgname: "",
+            orgINN: "",
+            orgKPP: "",
         },
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
         },
     });
+
+    let a: FormikValues;
 
     const initTreeData: DataNode[] = [
         {
@@ -90,7 +96,12 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "0-1",
-                    title: <ComponentClientDetail></ComponentClientDetail>,
+                    title: (
+                        <ComponentClientDetail
+                            values={formik.values}
+                            handleChange={formik.handleChange}
+                        ></ComponentClientDetail>
+                    ),
                 },
             ],
         },
@@ -100,8 +111,12 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "1-1",
-                    // title: <ComponentOrganizationDetail formikRef={formik}></ComponentOrganizationDetail>,
-                    title: <ORGForm></ORGForm>,
+                    title: (
+                        <ComponentOrganizationDetail
+                            values={formik.values}
+                            handleChange={formik.handleChange}
+                        ></ComponentOrganizationDetail>
+                    ),
                 },
             ],
         },
@@ -140,11 +155,35 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     ];
 
     const submitForm = () => {
-        console.log("Send:", emailList);
+        formik.submitForm();
+        console.log("Send:", formik.values);
         const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
         console.log("Send:", keyValues);
         setOpen(false);
     };
+
+    const [formValues, setFormValues] = React.useState({
+        formA: {},
+        formB: {},
+    });
+
+    function handleFormAChange(values: IClient) {
+        setFormValues({
+            ...formValues,
+            formA: values,
+        });
+    }
+
+    function handleFormBChange(values: any) {
+        setFormValues({
+            ...formValues,
+            formB: values,
+        });
+    }
+
+    function handleSubmit() {
+        alert(JSON.stringify(formValues, null, 2));
+    }
 
     return (
         <Modal

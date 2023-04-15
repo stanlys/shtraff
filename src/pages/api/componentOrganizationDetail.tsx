@@ -4,72 +4,26 @@ import { Form, FormikConfig, Formik, FormikValues, useFormik, withFormik, Formik
 
 const { Text } = Typography;
 
-// export interface ComponentOrganizationDetailProp {
-//     formikRef: FormikConfig<FormikValues>;
-// }
-interface FormValues {
-    orgname: "";
-    orgINN: "";
-    orgKPP: "";
-    orgOGRN: "";
-    orgAddress: "";
+export interface IOrgProps {
+    values: FormikValues;
+    handleChange: React.ChangeEventHandler;
 }
 
-const ComponentOrganizationDetail = (props: FormikProps<FormValues>) => {
-    // const formik = useFormik({
-    //     initialValues: {
-    //         orgname: "",
-    //         orgINN: "",
-    //         orgKPP: "",
-    //         orgOGRN: "",
-    //         orgAddress: "",
-    //     },
-    //     onSubmit: (values) => {
-    //         console.log("Send", values);
-    //     },
-    // });
-
-    const { isSubmitting } = props;
+const ComponentOrganizationDetail = ({values, handleChange}: IOrgProps) => {
     return (
-        <Form>
             <Space direction="vertical" style={{ width: "30rem" }}>
                 <Text>Название организации</Text>
-                <Field name="orgname"></Field>
-                <Field name="orgINN"></Field>
-                <Field name="orgKPP"></Field>
-                <Field name="orgOGRN"></Field>
-                <Field name="orgAddress"></Field>
-                {/* <Input size="large" name="orgname" value={formik.values.orgname} onChange={formik.handleChange} />
+                <Input size="large" name="orgname" value={values.orgname} onChange={handleChange} />
                 <label>ИНН организации</label>
-                <Input size="large" />
+                <Input size="large" name="orgINN" value={values.orgINN} onChange={handleChange} />
                 <label>КПП организации</label>
-                <Input size="large" />
+                <Input size="large" name="orgKPP" value={values.orgKPP} onChange={handleChange} />
                 <label>ОГРН организации</label>
                 <Input size="large" />
                 <label>Юридический адрес</label>
-                <Input size="large" /> */}
-                <button type="submit">send</button>
-                <button type="reset">reset</button>
+                <Input size="large" />
             </Space>
-        </Form>
     );
 };
 
-const ORGForm = withFormik({
-    mapPropsToValues: () => {
-        return {
-            orgname: "",
-            orgINN: "",
-            orgKPP: "",
-            orgOGRN: "",
-            orgAddress: "",
-        };
-    },
-    handleSubmit: (values) => {
-        console.log("dddd", values.orgname);
-    },
-})(ComponentOrganizationDetail);
-
-export default ORGForm;
-
-// export default ComponentOrganizationDetail;
+export default ComponentOrganizationDetail;
