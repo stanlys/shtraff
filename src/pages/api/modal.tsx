@@ -5,12 +5,13 @@ import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
 import ComponentKeyValue from "./componentKeyValue";
 import ComponentEmailList from "./componentEmailList";
-import ComponentClientDetail, { IClient } from "./componentClientDetail";
+import ComponentClientDetail, { IClientProps } from "./componentClientDetail";
 import ComponentBank from "./componentBank";
 import ComponentOrganizationDetail from "./componentOrganizationDetail";
 import { FormikConfig, FormikValues, useFormik } from "formik";
 import ORGForm from "./componentOrganizationDetail";
 import ClientForm from "./componentClientDetail";
+import * as Yup from "yup";
 
 const { Text, Link } = Typography;
 
@@ -29,23 +30,23 @@ interface DataType {
     control: ReactNode;
 }
 
-const metaColumns: ColumnsType<DataType> = [
-    {
-        key: "key",
-        dataIndex: "keyValue",
-        title: "Ключ",
-    },
-    {
-        key: "value",
-        dataIndex: "value",
-        title: "Значение",
-    },
-    {
-        key: "control",
-        dataIndex: "control",
-        title: "",
-    },
-];
+// const metaColumns: ColumnsType<DataType> = [
+//     {
+//         key: "key",
+//         dataIndex: "keyValue",
+//         title: "Ключ",
+//     },
+//     {
+//         key: "value",
+//         dataIndex: "value",
+//         title: "Значение",
+//     },
+//     {
+//         key: "control",
+//         dataIndex: "control",
+//         title: "",
+//     },
+// ];
 
 const metaKeyValue: DataType[] = [];
 
@@ -68,10 +69,32 @@ interface ModalWindowProps {
     setOpen: (open: boolean) => void;
 }
 
+export interface IForm {
+    name: string;
+    days: string;
+    email: string;
+    orgname: string;
+    orgINN: string;
+    orgKPP: string;
+    orgOGRN: string;
+    orgAddress: string;
+}
+
 export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     const [emailList, setEmailList] = useState<string[]>([""]);
 
     const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
+
+    const formValidate = Yup.object({
+        name: Yup.string().required("Обязательно к заполнению"),
+        days: Yup.number().moreThan(0, "Больше нуля").required("Обязательно к заполнению"),
+        email: Yup.string().email("Введите Email").required("Обязательно к заполнению"),
+        orgname: Yup.string().required("Обязательно к заполнению"),
+        orgINN: Yup.string().required("Обязательно к заполнению").min(7),
+        orgKPP: Yup.string().required("Обязательно к заполнению"),
+        orgOGRN: Yup.string().required("Обязательно к заполнению"),
+        orgAddress: Yup.string().required("Обязательно к заполнению"),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -81,7 +104,10 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             orgname: "",
             orgINN: "",
             orgKPP: "",
+            orgOGRN: "",
+            orgAddress: "",
         },
+        validationSchema: formValidate,
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2));
         },
@@ -115,6 +141,8 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
                         <ComponentOrganizationDetail
                             values={formik.values}
                             handleChange={formik.handleChange}
+                            errors={formik.errors}
+                            touched={formik.touched}
                         ></ComponentOrganizationDetail>
                     ),
                 },
@@ -155,35 +183,13 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     ];
 
     const submitForm = () => {
+        formik.validateForm();
         formik.submitForm();
         console.log("Send:", formik.values);
         const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
         console.log("Send:", keyValues);
         setOpen(false);
     };
-
-    const [formValues, setFormValues] = React.useState({
-        formA: {},
-        formB: {},
-    });
-
-    function handleFormAChange(values: IClient) {
-        setFormValues({
-            ...formValues,
-            formA: values,
-        });
-    }
-
-    function handleFormBChange(values: any) {
-        setFormValues({
-            ...formValues,
-            formB: values,
-        });
-    }
-
-    function handleSubmit() {
-        alert(JSON.stringify(formValues, null, 2));
-    }
 
     return (
         <Modal
