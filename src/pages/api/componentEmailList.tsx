@@ -33,7 +33,7 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setE
             {emailList.length === 1 ? (
                 <>
                     <Text>Email</Text>
-                    <Input size="large" value={emailList[0]} />
+                    <Input size="large" value={emailList[0]} onChange={(e) => changeEmail(e, 0)} />
                     <Divider></Divider>
                 </>
             ) : (

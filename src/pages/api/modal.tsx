@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { ComponentElement, FC, ReactNode, createRef, useState } from "react";
 import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table } from "antd";
 import { DownOutlined, FrownFilled, FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -12,6 +12,7 @@ import { FormikConfig, FormikValues, useFormik } from "formik";
 import ORGForm from "./componentOrganizationDetail";
 import ClientForm from "./componentClientDetail";
 import * as Yup from "yup";
+import { CompoundedComponent } from "antd/es/float-button/interface";
 
 const { Text, Link } = Typography;
 
@@ -73,11 +74,13 @@ export interface IForm {
     name: string;
     days: string;
     email: string;
+    credit: string;
     orgname: string;
     orgINN: string;
     orgKPP: string;
     orgOGRN: string;
     orgAddress: string;
+    emails: Array<string>;
 }
 
 export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
@@ -85,10 +88,11 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
 
     const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
 
-    const formValidate = Yup.object({
+    const formValidate = Yup.object().shape({
         name: Yup.string().required("Обязательно к заполнению"),
         days: Yup.number().moreThan(0, "Больше нуля").required("Обязательно к заполнению"),
         email: Yup.string().email("Введите Email").required("Обязательно к заполнению"),
+        credit: Yup.string().required("Обязательно к заполнению"),
         orgname: Yup.string().required("Обязательно к заполнению"),
         orgINN: Yup.string().required("Обязательно к заполнению").min(7),
         orgKPP: Yup.string().required("Обязательно к заполнению"),
@@ -101,6 +105,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             name: "",
             days: "",
             email: "",
+            creadit: "",
             orgname: "",
             orgINN: "",
             orgKPP: "",
@@ -113,8 +118,6 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
         },
     });
 
-    let a: FormikValues;
-
     const initTreeData: DataNode[] = [
         {
             title: <span>Детали клиента</span>,
@@ -126,6 +129,8 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
                         <ComponentClientDetail
                             values={formik.values}
                             handleChange={formik.handleChange}
+                            errors={formik.errors}
+                            touched={formik.touched}
                         ></ComponentClientDetail>
                     ),
                 },
@@ -183,12 +188,17 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     ];
 
     const submitForm = () => {
-        formik.validateForm();
-        formik.submitForm();
-        console.log("Send:", formik.values);
-        const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
-        console.log("Send:", keyValues);
-        setOpen(false);
+        formik.handleSubmit();
+        // formik.validateForm(formik.values);
+        // if (formik.isValid) {
+        //     formik.submitForm();
+        //     console.log("Send:", formik.values);
+        //     const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
+        //     console.log("Send:", keyValues);
+        //     setOpen(false);
+        // } else {
+        //     console.log(formik.errors);
+        // }
     };
 
     return (
@@ -203,7 +213,10 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             width={1000}
         >
             <Divider></Divider>
-            <Tree treeData={initTreeData} switcherIcon={<DownOutlined />} />
+            <form onSubmit={formik.handleSubmit}>
+                <Tree treeData={initTreeData} switcherIcon={<DownOutlined />} />
+                <button type="submit"> - Send - </button>
+            </form>
         </Modal>
     );
 };
