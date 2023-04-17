@@ -8,7 +8,7 @@ import ComponentEmailList from "./componentEmailList";
 import ComponentClientDetail, { IClientProps } from "./componentClientDetail";
 import ComponentBank from "./componentBank";
 import ComponentOrganizationDetail from "./componentOrganizationDetail";
-import { FormikConfig, FormikValues, useFormik } from "formik";
+import { FormikConfig, FormikProvider, FormikValues, useFormik } from "formik";
 import ORGForm from "./componentOrganizationDetail";
 import ClientForm from "./componentClientDetail";
 import * as Yup from "yup";
@@ -30,24 +30,6 @@ interface DataType {
     value: ReactNode;
     control: ReactNode;
 }
-
-// const metaColumns: ColumnsType<DataType> = [
-//     {
-//         key: "key",
-//         dataIndex: "keyValue",
-//         title: "Ключ",
-//     },
-//     {
-//         key: "value",
-//         dataIndex: "value",
-//         title: "Значение",
-//     },
-//     {
-//         key: "control",
-//         dataIndex: "control",
-//         title: "",
-//     },
-// ];
 
 const metaKeyValue: DataType[] = [];
 
@@ -84,7 +66,6 @@ export interface IForm {
 }
 
 export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
-    const [emailList, setEmailList] = useState<string[]>([""]);
 
     const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
 
@@ -98,6 +79,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
         orgKPP: Yup.string().required("Обязательно к заполнению"),
         orgOGRN: Yup.string().required("Обязательно к заполнению"),
         orgAddress: Yup.string().required("Обязательно к заполнению"),
+        emails: Yup.array().of(Yup.string().email("Введите Email").required("Обязательно к заполнению")),
     });
 
     const formik = useFormik({
@@ -111,6 +93,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             orgKPP: "",
             orgOGRN: "",
             orgAddress: "",
+            emails: [""],
         },
         validationSchema: formValidate,
         onSubmit: (values) => {
@@ -169,7 +152,16 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             children: [
                 {
                     key: "3-1",
-                    title: <ComponentEmailList emailList={emailList} setEmailList={setEmailList}></ComponentEmailList>,
+                    title: (
+                        <FormikProvider value={formik}>
+                            <ComponentEmailList
+                                values={formik.values}
+                                errors={formik.errors}
+                                handleChange={formik.handleChange}
+                                touched={formik.initialTouched}
+                            ></ComponentEmailList>
+                        </FormikProvider>
+                    ),
                 },
             ],
         },
@@ -215,7 +207,6 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             <Divider></Divider>
             <form onSubmit={formik.handleSubmit}>
                 <Tree treeData={initTreeData} switcherIcon={<DownOutlined />} />
-                <button type="submit"> - Send - </button>
             </form>
         </Modal>
     );
