@@ -62,7 +62,6 @@ const ComponentKeyValue: React.FC<ComponentKeyValueProp> = ({ keyValue, setKeyVa
             <Button
                 type="link"
                 onClick={() => {
-                    //getValue(keyValue);
                     setKeyValue(addKeyValue(keyValue));
                 }}
             >

@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button, Modal, Divider, Tree, Space, Typography, Input } from "antd";
+import { Field, FieldArray, FormikProvider, useFormik } from "formik";
 const { Text } = Typography;
 
 interface ComponentEmailListProps {
@@ -9,8 +10,6 @@ interface ComponentEmailListProps {
 
 const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setEmailList }) => {
     // const [emailList, setEmailList] = useState<string[]>([""]);
-
-    const a = React.createRef();
 
     const addEmail = () => {
         setEmailList((emailList) => [...emailList, ""]);
@@ -28,9 +27,16 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setE
         });
     };
 
+    const formikEmailList = useFormik({
+        initialValues: {
+            emails: ["11111", "222222", "333333"],
+        },
+        onSubmit: (values) => console.log(values),
+    });
+
     return (
         <Space direction="vertical" style={{ width: "30rem" }}>
-            {emailList.length === 1 ? (
+            {/* {emailList.length === 1 ? (
                 <>
                     <Text>Email</Text>
                     <Input size="large" value={emailList[0]} onChange={(e) => changeEmail(e, 0)} />
@@ -51,25 +57,49 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setE
                         <Divider></Divider>
                     </div>
                 ))
-            )}
+            )} */}
+            {/* <FormikProvider value={formikEmailList}>
+                <FieldArray name="emails">
+                    {(el) => {
+                        formikEmailList.values.emails.map((_el, index) => <p key={index}>{_el}</p>);
+                        return (
+                            <Button type="dashed" block onClick={() => el.push("")}>
+                                + Добавить еще email
+                            </Button>
+                        );
+                    }}
+                </FieldArray>
+            </FormikProvider> */}
+            <FormikProvider value={formikEmailList}>
+                <FieldArray
+                    name="email"
+                    render={(element) => (
+                        <div>
+                            {element.form.values.emails.map((email, index) => (
+                                <div key={`email${index}`}>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <Text>Email</Text>
+                                        <Button danger type="dashed" onClick={() => element.remove(index)}>
+                                            - Удалить email
+                                        </Button>
+                                    </div>
+                                    <Input
+                                        size="large"
+                                        name={email}
+                                        value={email}
+                                        onChange={formikEmailList.handleChange}
+                                    />
 
-            {/* {emailList.map((email, index) => (
-                <>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <Text>Email</Text>
-                        <Button danger type="dashed" onClick={() => delEmail(index)}>
-                            - Удалить email
-                        </Button>
-                    </div>
-
-                    <Input size="large" />
-
-                    <Divider></Divider>
-                </>
-            ))} */}
-            <Button type="dashed" block onClick={addEmail}>
-                + Добавить еще email
-            </Button>
+                                    <Divider></Divider>
+                                </div>
+                            ))}
+                            <Button type="dashed" block onClick={() => element.push("")}>
+                                + Добавить еще email
+                            </Button>
+                        </div>
+                    )}
+                />
+            </FormikProvider>
         </Space>
     );
 };
