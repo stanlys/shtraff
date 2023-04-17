@@ -71,11 +71,51 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setE
                 </FieldArray>
             </FormikProvider> */}
             <FormikProvider value={formikEmailList}>
-                <FieldArray
-                    name="email"
+                <FieldArray name="emails">
+                    {(fieldArrayProps) => {
+                        const { push, remove, form } = fieldArrayProps;
+
+                        return (
+                            <>
+                                <div>
+                                    {(form.values.emails as string[]).map((el, index) => (
+                                        <div key={`email${index}`}>
+                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                <Text>Email</Text>
+                                                <Button danger type="dashed" onClick={() => remove(index)}>
+                                                    - Удалить email
+                                                </Button>
+                                            </div>
+                                            <Input
+                                                size="large"
+                                                name={`emails[${index}]`}
+                                                value={el}
+                                                onChange={formikEmailList.handleChange}
+                                            />
+
+                                            <Divider></Divider>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button
+                                    type="dashed"
+                                    block
+                                    onClick={() => {
+                                        push(" ");
+                                        console.log(form);
+                                    }}
+                                >
+                                    + Добавить еще email
+                                </Button>
+                            </>
+                        );
+                    }}
+                </FieldArray>
+                {/* <FieldArray
+                    name="emails"
                     render={(element) => (
                         <div>
-                            {element.form.values.emails.map((email, index) => (
+                            {emails.map((email, index) => (
                                 <div key={`email${index}`}>
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         <Text>Email</Text>
@@ -98,7 +138,7 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ emailList, setE
                             </Button>
                         </div>
                     )}
-                />
+                /> */}
             </FormikProvider>
         </Space>
     );
