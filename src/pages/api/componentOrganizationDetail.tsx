@@ -11,6 +11,7 @@ import {
     Field,
     FormikErrors,
     FormikTouched,
+    ErrorMessage,
 } from "formik";
 import { IForm } from "./modal";
 
@@ -28,16 +29,29 @@ const ComponentOrganizationDetail = ({ values, handleChange, errors, touched }: 
         <Space direction="vertical" style={{ width: "30rem" }}>
             <Text>Название организации</Text>
             <Input size="large" name="orgname" value={values.orgname} onChange={handleChange} />
-            {touched.orgname && <p>{errors.orgname}</p>}
+            <Text type="danger">
+                <ErrorMessage name="orgname"></ErrorMessage>
+            </Text>
             <label>ИНН организации</label>
             <Input size="large" name="orgINN" value={values.orgINN} onChange={handleChange} />
-            {errors.orgINN && touched.orgINN ? <div>{errors.orgINN}</div> : null}
+            <Text type="danger">
+                <ErrorMessage name="orgINN"></ErrorMessage>
+            </Text>
             <label>КПП организации</label>
             <Input size="large" name="orgKPP" value={values.orgKPP} onChange={handleChange} />
+            <Text type="danger">
+                <ErrorMessage name="orgKPP"></ErrorMessage>
+            </Text>
             <label>ОГРН организации</label>
             <Input size="large" name="orgOGRN" value={values.orgOGRN} onChange={handleChange} />
+            <Text type="danger">
+                <ErrorMessage name="orgOGRN"></ErrorMessage>
+            </Text>
             <label>Юридический адрес</label>
             <Input size="large" name="orgAddress" value={values.orgAddress} onChange={handleChange} />
+            <Text type="danger">
+                <ErrorMessage name="orgAddress"></ErrorMessage>
+            </Text>
         </Space>
     );
 };

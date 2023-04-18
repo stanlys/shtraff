@@ -6,12 +6,11 @@ import { Input, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { ICunsumers } from "@app/MOCK_DATA";
 import { Table } from "antd";
-import type { ColumnsType, TableProps } from "antd/es/table";
+import type { ColumnsType } from "antd/es/table";
 import { CopyOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 
 import { ModalWindow } from "./api/modal";
-
-const inter = Inter({ subsets: ["latin"] });
 
 interface DataType {
     key: React.Key;
@@ -61,13 +60,17 @@ const columns: ColumnsType<DataType> = [
         title: "Создан",
         dataIndex: "createAt",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.id.length - b.id.length,
+        render: (value: string, recoder: { key: React.Key }) => {
+            return dayjs(value).format("DD.MM.YYYY");
+        },
     },
     {
         title: "Изменен",
         dataIndex: "changeAt",
         defaultSortOrder: "descend",
-        sorter: (a, b) => a.id.length - b.id.length,
+        render: (value: string, recoder: { key: React.Key }) => {
+            return dayjs(value).format("DD.MM.YYYY");
+        },
     },
 ];
 
@@ -80,7 +83,6 @@ export default function Home() {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        // console.log("selectedRowKeys changed: ", newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -133,7 +135,6 @@ export default function Home() {
                         rowSelection={rowSelection}
                         columns={columns}
                         dataSource={setDataSource()}
-                        
                         style={{ minHeight: 600 }}
                         className={style.table}
                     />

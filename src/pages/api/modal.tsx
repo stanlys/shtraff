@@ -65,8 +65,30 @@ export interface IForm {
     emails: Array<string>;
 }
 
-export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
+interface IKeyValues {
+    key: string;
+    value: string;
+}
 
+export interface IKeysArray {
+    keyValues: Array<IKeyValues>;
+}
+
+export interface IFormik {
+    name: string;
+    days: string;
+    email: string;
+    creadit: string;
+    orgname: string;
+    orgINN: string;
+    orgKPP: string;
+    orgOGRN: string;
+    orgAddress: string;
+    emails: string[];
+    keyValues: IKeyValues[];
+}
+
+export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     const [metaKeyValue, setMetaKeyValue] = useState<DataType[]>([]);
 
     const formValidate = Yup.object().shape({
@@ -82,7 +104,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
         emails: Yup.array().of(Yup.string().email("Введите Email").required("Обязательно к заполнению")),
     });
 
-    const formik = useFormik({
+    const formik = useFormik<IFormik>({
         initialValues: {
             name: "",
             days: "",
@@ -94,6 +116,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             orgOGRN: "",
             orgAddress: "",
             emails: [""],
+            keyValues: [{ key: "", value: "" }],
         },
         validationSchema: formValidate,
         onSubmit: (values) => {
@@ -126,12 +149,14 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
                 {
                     key: "1-1",
                     title: (
-                        <ComponentOrganizationDetail
-                            values={formik.values}
-                            handleChange={formik.handleChange}
-                            errors={formik.errors}
-                            touched={formik.touched}
-                        ></ComponentOrganizationDetail>
+                        <FormikProvider value={formik}>
+                            <ComponentOrganizationDetail
+                                values={formik.values}
+                                handleChange={formik.handleChange}
+                                errors={formik.errors}
+                                touched={formik.touched}
+                            ></ComponentOrganizationDetail>
+                        </FormikProvider>
                     ),
                 },
             ],
@@ -172,7 +197,14 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
                 {
                     key: "4-1",
                     title: (
-                        <ComponentKeyValue keyValue={metaKeyValue} setKeyValue={setMetaKeyValue}></ComponentKeyValue>
+                        <FormikProvider value={formik}>
+                            <ComponentKeyValue
+                                values={formik.values}
+                                errors={formik.errors}
+                                touched={formik.touched}
+                                handleChange={formik.handleChange}
+                            ></ComponentKeyValue>
+                        </FormikProvider>
                     ),
                 },
             ],
@@ -180,6 +212,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     ];
 
     const submitForm = () => {
+        console.log(formik.values);
         formik.handleSubmit();
         // formik.validateForm(formik.values);
         // if (formik.isValid) {
