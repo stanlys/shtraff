@@ -1,17 +1,10 @@
 import React from "react";
 import { Button, Divider, Space, Typography, Input } from "antd";
 import { ErrorMessage, FieldArray, FormikErrors, FormikTouched, FormikValues } from "formik";
-import { IForm } from "./modal";
+import { ISubFormProps } from "./interface";
 const { Text } = Typography;
 
-interface ComponentEmailListProps {
-    values: FormikValues;
-    errors: FormikErrors<IForm>;
-    touched: FormikTouched<IForm>;
-    handleChange: React.ChangeEventHandler;
-}
-
-const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ values, errors, touched, handleChange }) => {
+const ComponentEmailList: React.FC<ISubFormProps> = ({ values, errors, touched, handleChange }) => {
     return (
         <Space direction="vertical" style={{ width: "30rem" }}>
             <FieldArray name="emails">
@@ -22,7 +15,7 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ values, errors,
                             <div>
                                 {(form.values.emails as string[]).map((email, index) => (
                                     <div key={`email${index}`}>
-                                        <div style={{display: "flex"}}>
+                                        <div style={{ display: "flex" }}>
                                             <Text>Email</Text>
                                             {index !== 0 && (
                                                 <Button danger type="dashed" onClick={() => remove(index)}>

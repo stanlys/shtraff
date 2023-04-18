@@ -3,7 +3,7 @@ import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table }
 import type { ColumnsType } from "antd/es/table";
 import { v4 as uuidv4 } from "uuid";
 import { FieldArray, FormikErrors, FormikProvider, FormikTouched, FormikValues, useFormik } from "formik";
-import { IForm, IFormik, IKeysArray } from "./modal";
+import { IForm, IFormik, IKeysArray } from "./interface";
 
 interface ComponentEmailListProps {
     values: FormikValues;

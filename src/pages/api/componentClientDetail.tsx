@@ -1,18 +1,10 @@
 import React from "react";
 import { Space, Typography, Input } from "antd";
-import { FormikErrors, FormikTouched, FormikValues } from "formik";
-import { IForm } from "./modal";
+import { ISubFormProps } from "./interface";
 
 const { Text } = Typography;
 
-export interface IClientProps {
-    values: FormikValues;
-    errors: FormikErrors<IForm>;
-    touched: FormikTouched<IForm>;
-    handleChange: React.ChangeEventHandler;
-}
-
-const ComponentClientDetail = ({ values, handleChange, errors, touched }: IClientProps) => {
+const ComponentClientDetail = ({ values, handleChange, errors, touched }: ISubFormProps) => {
     return (
         <Space direction="vertical" style={{ width: "30rem" }}>
             <Text>Имя</Text>

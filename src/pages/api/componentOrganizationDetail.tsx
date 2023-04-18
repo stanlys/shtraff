@@ -13,7 +13,7 @@ import {
     FormikTouched,
     ErrorMessage,
 } from "formik";
-import { IForm } from "./modal";
+import { IForm } from "./interface";
 
 const { Text } = Typography;
 
