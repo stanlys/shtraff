@@ -22,7 +22,7 @@ const ComponentEmailList: React.FC<ComponentEmailListProps> = ({ values, errors,
                             <div>
                                 {(form.values.emails as string[]).map((email, index) => (
                                     <div key={`email${index}`}>
-                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <div style={{display: "flex"}}>
                                             <Text>Email</Text>
                                             {index !== 0 && (
                                                 <Button danger type="dashed" onClick={() => remove(index)}>

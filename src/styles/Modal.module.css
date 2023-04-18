@@ -1,1 +1,9 @@
- 
+thead {
+    background-color: azure;
+    height: 15px;
+}
+
+.email_caption {
+    display: flex;
+    justify-content: space-between;
+}
