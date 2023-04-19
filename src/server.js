@@ -7,7 +7,7 @@ export function makeServer({ environment = "test" } = {}) {
                 return MOCK_REQUEST;
             });
             this.post("/addnote", (schema, request) => {
-                console.log("You post data");
+                alert("Data was sending");
                 return "OK";
             });
         },

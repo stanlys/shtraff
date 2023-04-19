@@ -5,14 +5,14 @@ export const INITIAL_IFORMIK: IFormik = {
     name: "",
     days: "",
     email: "",
-    creadit: "",
+    credit: "",
     orgname: "",
     orgINN: "",
     orgKPP: "",
     orgOGRN: "",
     orgAddress: "",
     emails: [""],
-    keyValues: [{ key: "", value: "" }],
+    keyValues: [],
     scores: [{ name: "", BIK: "", korrscore: "", number: "" }],
     defaultScore: 0,
 };
@@ -28,4 +28,13 @@ export const formValidate = Yup.object().shape({
     orgOGRN: Yup.string().required("Обязательно к заполнению"),
     orgAddress: Yup.string().required("Обязательно к заполнению"),
     emails: Yup.array().of(Yup.string().email("Введите Email").required("Обязательно к заполнению")),
+    scores: Yup.array().of(
+        Yup.object().shape({
+            name: Yup.string().required("Обязательно к заполнению"),
+            number: Yup.string().required("Обязательно к заполнению"),
+            BIK: Yup.string().required("Обязательно к заполнению"),
+            korrscore: Yup.string().required("Обязательно к заполнению"),
+        })
+    ),
+    keyValues: Yup.array(),
 });

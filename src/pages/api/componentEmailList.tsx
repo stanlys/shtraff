@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Divider, Space, Typography, Input } from "antd";
-import { ErrorMessage, FieldArray, FormikErrors, FormikTouched, FormikValues } from "formik";
+import { ErrorMessage, FieldArray } from "formik";
 import { ISubFormProps } from "./interface";
+import { getInputStatus } from "./helpers";
 const { Text } = Typography;
 
 const ComponentEmailList: React.FC<ISubFormProps> = ({ values, errors, touched, handleChange }) => {
@@ -26,6 +27,7 @@ const ComponentEmailList: React.FC<ISubFormProps> = ({ values, errors, touched, 
                                         <Input
                                             size="large"
                                             name={`emails[${index}]`}
+                                            status={getInputStatus(errors, `emails[${index}]`)}
                                             value={email}
                                             onChange={handleChange}
                                         />

@@ -1,8 +1,7 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import style from "./../styles/Home.module.css";
 import { Button } from "antd";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { ICunsumers } from "@app/MOCK_DATA";
 import { Table } from "antd";

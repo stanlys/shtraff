@@ -42,7 +42,7 @@ export interface IFormik {
     name: string;
     days: string;
     email: string;
-    creadit: string;
+    credit: string;
     orgname: string;
     orgINN: string;
     orgKPP: string;

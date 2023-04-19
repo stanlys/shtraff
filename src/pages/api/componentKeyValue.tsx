@@ -1,9 +1,8 @@
-import React, { ReactNode, RefObject, createRef, useState } from "react";
-import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { v4 as uuidv4 } from "uuid";
-import { FieldArray, FormikErrors, FormikProvider, FormikTouched, FormikValues, useFormik } from "formik";
-import { IForm, IFormik, IKeysArray } from "./interface";
+import React from "react";
+import { Button, Space, Input } from "antd";
+import { FieldArray, FormikErrors, FormikTouched, FormikValues } from "formik";
+import { IForm, IFormik } from "./interface";
+import { Empty } from "antd";
 
 interface ComponentEmailListProps {
     values: FormikValues;
@@ -31,6 +30,13 @@ const ComponentKeyValue: React.FC<ComponentEmailListProps> = ({ values, errors, 
                             const values = form.values as IFormik;
                             return (
                                 <tbody>
+                                    {values.keyValues.length == 0 && (
+                                        <tr>
+                                            <td colSpan={2}>
+                                                <Empty />
+                                            </td>
+                                        </tr>
+                                    )}
                                     {values.keyValues.map((keyvalue, index) => (
                                         <tr key={"key" + index}>
                                             <td>

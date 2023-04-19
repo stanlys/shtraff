@@ -1,13 +1,12 @@
 import React from "react";
-import { Button, Modal, Divider, Tree, Space, Typography, Input, Switch, Table } from "antd";
+import { Modal, Divider, Tree } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
 import ComponentKeyValue from "./componentKeyValue";
 import ComponentEmailList from "./componentEmailList";
 import ComponentClientDetail from "./componentClientDetail";
 import ComponentBank from "./componentBank";
 import ComponentOrganizationDetail from "./componentOrganizationDetail";
-import { FormikProvider, FormikTouched, FormikValues, useFormik } from "formik";
+import { FormikProvider, useFormik } from "formik";
 
 import { DataNode } from "antd/es/tree";
 import { IFormik } from "./interface";
@@ -22,8 +21,16 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
     const formik = useFormik<IFormik>({
         initialValues: INITIAL_IFORMIK,
         validationSchema: formValidate,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: async (values) => {
+            let response = await fetch("/addnote", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                },
+                body: JSON.stringify(values),
+            });
+            console.log(response.status);
+            setOpen(false);
         },
     });
 
@@ -115,21 +122,6 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
         },
     ];
 
-    const submitForm = () => {
-        console.log(formik.values);
-        formik.handleSubmit();
-        // formik.validateForm(formik.values);
-        // if (formik.isValid) {
-        //     formik.submitForm();
-        //     console.log("Send:", formik.values);
-        //     const keyValues = metaKeyValue.map((kv) => `${kv.value} + ${kv.keyValue}`);
-        //     console.log("Send:", keyValues);
-        //     setOpen(false);
-        // } else {
-        //     console.log(formik.errors);
-        // }
-    };
-
     return (
         <Modal
             title="Клиенты"
@@ -137,7 +129,7 @@ export const ModalWindow: React.FC<ModalWindowProps> = ({ open, setOpen }) => {
             open={open}
             okText="Создать"
             cancelText="Отменить"
-            onOk={() => submitForm()}
+            onOk={() => formik.handleSubmit()}
             onCancel={() => setOpen(false)}
             width={1000}
         >

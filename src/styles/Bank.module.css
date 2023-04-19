@@ -1,0 +1,4 @@
+.disable_switch {
+    pointer-events: auto;
+    opacity: 0.5;
+}
