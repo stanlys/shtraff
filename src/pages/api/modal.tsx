@@ -1,11 +1,11 @@
 import React from "react";
 import { Modal, Divider, Tree } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import ComponentKeyValue from "./componentKeyValue";
-import ComponentEmailList from "./componentEmailList";
-import ComponentClientDetail from "./componentClientDetail";
-import ComponentBank from "./componentBank";
-import ComponentOrganizationDetail from "./componentOrganizationDetail";
+import ComponentKeyValue from "./forms/componentKeyValue";
+import ComponentEmailList from "./forms/componentEmailList";
+import ComponentClientDetail from "./forms/componentClientDetail";
+import ComponentBank from "./forms/componentBank";
+import ComponentOrganizationDetail from "./forms/componentOrganizationDetail";
 import { FormikProvider, useFormik } from "formik";
 
 import { DataNode } from "antd/es/tree";

@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Divider, Space, Typography, Input } from "antd";
 import { ErrorMessage, FieldArray } from "formik";
-import { ISubFormProps } from "./interface";
-import { getInputStatus } from "./helpers";
+import { ISubFormProps } from "./../interface";
+import { getInputStatus } from "./../helpers";
 const { Text } = Typography;
 
 const ComponentEmailList: React.FC<ISubFormProps> = ({ values, errors, touched, handleChange }) => {

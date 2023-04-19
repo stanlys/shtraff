@@ -1,8 +1,8 @@
 import React from "react";
 import { Space, Typography, Input } from "antd";
 import { FormikErrors, FormikTouched, ErrorMessage, FormikValues } from "formik";
-import { IForm } from "./interface";
-import { getInputStatus } from "./helpers";
+import { IForm } from "./../interface";
+import { getInputStatus } from "./../helpers";
 
 const { Text } = Typography;
 

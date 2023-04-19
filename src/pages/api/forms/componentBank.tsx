@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Space, Input, Typography, Switch, Button, Divider, SwitchProps } from "antd";
-import { IFormik, ISubFormProps } from "./interface";
+import { IFormik, ISubFormProps } from "./../interface";
 import { ErrorMessage, FieldArray } from "formik";
-import style from "./../../styles/Bank.module.css";
-import { getInputStatus } from "./helpers";
+import style from "./../../../styles/Bank.module.css";
+import { getInputStatus } from "./../helpers";
 const { Text } = Typography;
 
 const ComponentBank: React.FC<ISubFormProps> = ({ errors, values, handleChange, touched }) => {
@@ -44,7 +44,7 @@ const ComponentBank: React.FC<ISubFormProps> = ({ errors, values, handleChange, 
                                         size="large"
                                         name={`scores[${index}].name`}
                                         value={score.name}
-                                        status={getInputStatus(errors, `scores[${index}].number`)}
+                                        status={getInputStatus(errors, `scores[${index}].name`)}
                                         onChange={handleChange}
                                         placeholder="Название счета"
                                     />

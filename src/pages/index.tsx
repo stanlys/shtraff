@@ -1,5 +1,4 @@
 import Head from "next/head";
-import style from "./../styles/Home.module.css";
 import { Button } from "antd";
 import { Input } from "antd";
 import React, { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { CopyOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import style from "./../styles/Home.module.css";
 
 import { ModalWindow } from "./api/modal";
 
